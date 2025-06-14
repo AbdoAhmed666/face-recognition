@@ -1,17 +1,16 @@
-name: Deploy Streamlit app to Azure Web App - leap-face-recognition-api
+name: Deploy Python Web App to Azure without ZIP
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout source code
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -21,20 +20,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create startup script
+      - name: Create startup file
         run: |
           echo "python3 app.py" > startup.sh
           chmod +x startup.sh
 
-      - name: Zip app content
-        run: zip -r app.zip . -x "venv/*"
-
-      - name: Deploy to Azure Web App via Publish Profile
+      - name: Deploy using Azure Publish Profile
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'leap-face-recognition-api'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: app.zip
+          package: .
