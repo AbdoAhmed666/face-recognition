@@ -13,14 +13,15 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Create and start virtual environment
+      - name: Create and activate virtual environment
         run: |
           python -m venv venv
           source venv/bin/activate
@@ -28,10 +29,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Zip artifact for deployment
+      - name: Zip app files
         run: zip release.zip ./* -r
 
-      - name: Upload artifact for deployment jobs
+      - name: Upload zip artifact
         uses: actions/upload-artifact@v4
         with:
           name: python-app
@@ -50,12 +51,12 @@ jobs:
       contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
+      - name: Unzip artifact
         run: unzip release.zip
 
       - name: Login to Azure
@@ -65,9 +66,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4D4926FF3C5B437F97E826192ACF3DB8 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C0EC0C4AC27146BF8A49A7CD0BCC85F8 }}
 
-      - name: Deploy using Zip Deploy
+      - name: Deploy using az webapp deploy
         run: |
-          az webapp deployment source config-zip \
+          az webapp deploy \
             --resource-group face-recognition-rg \
             --name leap-face-recognition-api \
-            --src release.zip
+            --src-path release.zip \
+            --type zip
