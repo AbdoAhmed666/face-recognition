@@ -35,4 +35,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /site/wwwroot/
-          protocol: ftps
+          protocol: ftps         # ← مهم جدًا تستخدم ftps مش ftp
+          passive: true          # ← لتفادي مشاكل الاتصال في Azure
+          dangerous-clean-slate: false  # ← يخلي الرفع Incremental مش يمسح كل حاجة
+
