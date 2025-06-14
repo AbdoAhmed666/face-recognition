@@ -23,11 +23,6 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Generate startup script
-        run: |
-          echo "python3 app.py" > startup.sh
-          chmod +x startup.sh
-
       - name: Deploy using FTP (no ZIP)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -35,7 +30,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /site/wwwroot/
-          protocol: ftps         # ← مهم جدًا تستخدم ftps مش ftp
-          passive: true          # ← لتفادي مشاكل الاتصال في Azure
-          dangerous-clean-slate: false  # ← يخلي الرفع Incremental مش يمسح كل حاجة
-
+          protocol: ftps
+          passive: true
+          dangerous-clean-slate: false
