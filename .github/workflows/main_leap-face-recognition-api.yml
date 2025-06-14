@@ -1,4 +1,4 @@
-name: Deploy Streamlit to Azure using publish profile
+name: Deploy Streamlit app to Azure Web App - leap-face-recognition-api
 
 on:
   push:
@@ -21,15 +21,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create startup command
-        run: echo "python3 app.py" > startup.sh
+      - name: Create startup script
+        run: |
+          echo "python3 app.py" > startup.sh
+          chmod +x startup.sh
+
+      - name: Zip app content
+        run: zip -r app.zip . -x "venv/*"
 
       - name: Deploy to Azure Web App via Publish Profile
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'leap-face-recognition-api'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: .
+          package: app.zip
