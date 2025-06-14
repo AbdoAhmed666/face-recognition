@@ -1,2 +1,2 @@
-#!/bin/bash
-streamlit run web/application.py --server.port $PORT --server.enableCORS false
+echo "python3 app.py" > startup.sh
+chmod +x startup.sh
