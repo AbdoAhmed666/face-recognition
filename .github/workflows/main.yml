@@ -30,7 +30,7 @@ jobs:
 
       - name: Ensure App Service exists
         run: |
-          if ! az webapp show --name ${{ secrets.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RG }}; then
+          if ! az webapp show --name ${{ secrets.AZURE_WEBAPP_NAME }} --resource-group ${{ secrets.AZURE_RG }} > /dev/null 2>&1; then
             echo "Web App not found. Creating it..."
             az webapp create \
               --name ${{ secrets.AZURE_WEBAPP_NAME }} \
