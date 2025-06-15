@@ -39,7 +39,8 @@ jobs:
                 --resource-group ${{ secrets.AZURE_RG }} \
                 --plan ${{ secrets.AZURE_APP_PLAN }} \
                 --runtime "PYTHON|3.10"
-          }
+            }
+
 
       - name: Zip project
         run: zip -r app.zip .
