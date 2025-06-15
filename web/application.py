@@ -9,7 +9,7 @@ LOGO_PATH = os.path.join(BASE_PATH, "assets", "logo.jpg")
 
 with st.sidebar:
     st.image(LOGO_PATH, width=200)
-    st.markdown("---") 
+    st.markdown("---")
 
     choice = option_menu(
         "Navigation",
@@ -20,11 +20,19 @@ with st.sidebar:
         orientation="vertical",
     )
 
+# Instead of switch_page(), we display a prompt to guide the user to select from sidebar.
 if choice == "Register":
-    st.switch_page("pages/1_Register.py")
+    st.title("📄 Register Page")
+    st.markdown("⬅️ Please open the 'Register' page from the sidebar (it appears under 'pages').")
+
 elif choice == "Recognize":
-    st.switch_page("pages/2_Recognize.py")
+    st.title("🔍 Recognize Page")
+    st.markdown("⬅️ Please open the 'Recognize' page from the sidebar (it appears under 'pages').")
+
 elif choice == "Live Camera":
-    st.switch_page("pages/3_Live_Camera.py")
+    st.title("📷 Live Camera Page")
+    st.markdown("⬅️ Please open the 'Live Camera' page from the sidebar (it appears under 'pages').")
+
 elif choice == "Delete":
-    st.switch_page("pages/4_Delete.py")
+    st.title("🗑️ Delete Page")
+    st.markdown("⬅️ Please open the 'Delete' page from the sidebar (it appears under 'pages').")
