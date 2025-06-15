@@ -23,24 +23,23 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Debug secrets
+      - name: Debug secrets (Optional for testing)
         run: |
           echo "WEBAPP: ${{ secrets.AZURE_WEBAPP_NAME }}"
           echo "RESOURCE GROUP: ${{ secrets.AZURE_RG }}"
 
       - name: Ensure App Service exists
         run: |
-          az webapp show \
+          if ! az webapp show \
             --name ${{ secrets.AZURE_WEBAPP_NAME }} \
-            --resource-group ${{ secrets.AZURE_RG }} || {
+            --resource-group ${{ secrets.AZURE_RG }}; then
               echo "Web App not found. Creating it..."
               az webapp create \
                 --name ${{ secrets.AZURE_WEBAPP_NAME }} \
                 --resource-group ${{ secrets.AZURE_RG }} \
                 --plan ${{ secrets.AZURE_APP_PLAN }} \
                 --runtime "PYTHON|3.10"
-            }
-
+          fi
 
       - name: Zip project
         run: zip -r app.zip .
